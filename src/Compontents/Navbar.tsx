@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const navbarElements: string[] = ["Menu", "Cart", "Book A Table"];
+const navbarElements: string[] = ["Menu", "Cart", "Book A Table", "Learn About Coffee"];
 
 const Navbar = () => {
   return (
