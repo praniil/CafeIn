@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import coffeeTypes from "../typescoffee.png";
 import tableCoffee from "../coffeeTable.jpg";
 import americano from "../coffee/americano.jpg";
 import arabiccoffee from "../coffee/arabic-coffee.jpg";
@@ -14,7 +13,12 @@ import mocha from "../coffee/mocha.jpg";
 import ristretto from "../coffee/ristretto.jpg";
 import turkish from "../coffee/turkish.jpg";
 
-const photoSliderArray: string[] = [americano, arabiccoffee, cappuccino, latte];
+const photoSliderArray = [
+  { image: americano, type: "americano" },
+  { image: arabiccoffee, type: "arabic-coffee" },
+  { image: cappuccino, type: "cappuccino" },
+  { image: latte, type: "latte" },
+];
 
 const Home = () => {
   return (
@@ -27,19 +31,18 @@ const Home = () => {
           {" "}
           OUR SPECIAL COFFEE
         </p>
-        <Link to={`/menu/${photoSliderArray[0]}`}>
-          <img
-            className="w-96 h-auto m-auto pt-2 pb-5"
-            src={photoSliderArray[0]}
-            alt=""
-          />
-        </Link>
-        <button className="absolute top-1/2 left-2 transform -translate-y-1/2">
-          L
-        </button>
-        <button className="absolute top-1/2 right-2 transform -translate-y-1/2">
-          R
-        </button>
+        <div className="relative flex justify-center pr-96 h-full">
+          <Link to={`/menu/${photoSliderArray[0].type}`}>
+            <img
+              src={photoSliderArray[0].image}
+              alt=""
+              className="w-96 h-auto pt-2 pb-5 z-0"
+              style={{ position: "absolute" }}
+            />
+          </Link>
+          <button className="left-64 top-40 absolute z-10 text-2xl"> &lt;</button>
+          <button className="right-64 top-40 absolute z-10 text-2xl ">&gt;</button>
+        </div>
       </div>
     </div>
   );
