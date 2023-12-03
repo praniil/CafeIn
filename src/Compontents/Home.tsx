@@ -6,6 +6,7 @@ import arabiccoffee from "../coffee/arabic-coffee.jpg";
 import cappuccino from "../coffee/cappuccino2.jpg";
 import latte from "../coffee/latte.jpg";
 
+
 const photoSliderArray = [
   { image: americano, type: "americano" },
   { image: arabiccoffee, type: "arabic-coffee" },
@@ -39,7 +40,7 @@ const Home = () => {
       </div>
       <div>
         <p className="text-center mt-2 font-bold font-mono text-red-800">
-          OUR SPECIAL COFFEE
+          OUR SPECIAL
         </p>
         <div className="relative flex justify-center pr-96 h-full">
           <Link to={`/menu/${photoSliderArray[initialState].type}`}>
