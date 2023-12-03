@@ -8,6 +8,7 @@ import Cart from "./Compontents/Cart";
 import SignIn from "./Compontents/SignIn";
 import JoinNow from "./Compontents/JoinNow";
 import Info from "./Compontents/Info";
+import Menu from "./Compontents/Menu";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/cafein" element={<Home />}></Route>
-          {/* <Route path="/menu" element={<Menu />}></Route> */}
+          <Route path="/menu" element={<Menu />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
           {/* <Route path="/bookatable" element={<BookTable />}></Route> */}
           // <Route path="/sign-in" element={<SignIn />}></Route>
