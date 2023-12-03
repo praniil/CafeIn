@@ -1,17 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import tableCoffee from "../coffeeTable.jpg";
 import americano from "../coffee/americano.jpg";
 import arabiccoffee from "../coffee/arabic-coffee.jpg";
 import cappuccino from "../coffee/cappuccino2.jpg";
 import latte from "../coffee/latte.jpg";
-import cortado from "../coffee/Cortado.jpg";
-import espresso from "../coffee/espresso.jpg";
-import frappe from "../coffee/Frappe.jpg";
-import macchiator from "../coffee/macchiato.jpg";
-import mocha from "../coffee/mocha.jpg";
-import ristretto from "../coffee/ristretto.jpg";
-import turkish from "../coffee/turkish.jpg";
 
 const photoSliderArray = [
   { image: americano, type: "americano" },
@@ -21,6 +14,24 @@ const photoSliderArray = [
 ];
 
 const Home = () => {
+  const [initialState, setInitialState] = useState<number>(0);
+
+  function handleLeft() {
+    if (initialState === 0) {
+      setInitialState(photoSliderArray.length - 1);
+    } else {
+      setInitialState((prevState) => prevState - 1);
+    }
+  }
+
+  function handleRight() {
+    if (initialState === photoSliderArray.length - 1) {
+      setInitialState(0);
+    } else {
+      setInitialState((prevState) => prevState + 1);
+    }
+  }
+
   return (
     <div>
       <div>
@@ -28,21 +39,31 @@ const Home = () => {
       </div>
       <div>
         <p className="text-center mt-2 font-bold font-mono text-red-800">
-          {" "}
           OUR SPECIAL COFFEE
         </p>
         <div className="relative flex justify-center pr-96 h-full">
-          <Link to={`/menu/${photoSliderArray[0].type}`}>
+          <Link to={`/menu/${photoSliderArray[initialState].type}`}>
             <img
-              src={photoSliderArray[0].image}
+              src={photoSliderArray[initialState].image}
               alt=""
-              className="w-96 h-auto pt-2 pb-5 z-0"
+              className="w-96 h-72 pt-2 pb-5 z-0"
               style={{ position: "absolute" }}
             />
           </Link>
-          <button className="left-64 top-40 absolute z-10 text-2xl"> &lt;</button>
-          <button className="right-64 top-40 absolute z-10 text-2xl ">&gt;</button>
+          <button
+            className="left-4 top-1/2 transform -translate-y-1/2 absolute z-10 text-lg bg-gray-300 text-black px-3 py-1 rounded-full focus:outline-none hover:bg-gray-700 hover:text-white transition duration-300"
+            onClick={handleLeft}
+          >
+            &lt;
+          </button>
+          <button
+            className="right-4 top-1/2 transform -translate-y-1/2 absolute z-10 text-lg bg-gray-300 text-black px-3 py-1 rounded-full focus:outline-none hover:bg-gray-700 hover:text-white transition duration-300"
+            onClick={handleRight}
+          >
+            &gt;
+          </button>
         </div>
+        <p className="text-center pt-72"> {photoSliderArray[initialState].type.toUpperCase()} </p>
       </div>
     </div>
   );
