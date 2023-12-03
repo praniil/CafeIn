@@ -63,7 +63,7 @@ const Home = () => {
             &gt;
           </button>
         </div>
-        <p className="text-center pt-72"> {photoSliderArray[initialState].type.toUpperCase()} </p>
+        <p className="text-center pt-72 cursor-pointer">Name: {photoSliderArray[initialState].type.toUpperCase()} </p>
       </div>
     </div>
   );
