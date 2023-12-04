@@ -9,6 +9,7 @@ import SignIn from "./Compontents/SignIn";
 import JoinNow from "./Compontents/JoinNow";
 import Info from "./Compontents/Info";
 import Menu from "./Compontents/Menu";
+import Americano from "./Compontents/CoffeeTypes/Americano";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           // <Route path="/sign-in" element={<SignIn />}></Route>
           <Route path="/join-now" element={<JoinNow />}></Route>
           <Route path="/learn-about-coffee" element={<Info />} />
+          <Route path="/menu/americano" element={<Americano />} />
         </Routes>
       </BrowserRouter>
     </>

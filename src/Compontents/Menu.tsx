@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import americano from "../coffee/americano.jpg";
 import arabiccoffee from "../coffee/arabic-coffee.jpg";
 import cappuccino from "../coffee/cappuccino2.jpg";
@@ -61,7 +61,7 @@ const Menu = () => {
     },
     {
       url: turkish,
-      name: "Turkish",
+      name: "Turkish Coffee",
     },
   ];
 
@@ -81,18 +81,20 @@ const Menu = () => {
           </ul>
         </div>
         <div className="col-span-2">
-            <p className="font-serif font-bold text-4xl pb-6 mb-3"> Menu </p>
-            <p className="font-mono text-2xl pb-6 mb-3"> Drinks </p>
+          <p className="font-serif font-bold text-4xl pb-6 mb-3"> Menu </p>
+          <p className="font-mono text-2xl pb-6 mb-3"> Drinks </p>
           <div className="grid grid-cols-2 gap-7">
             {menuArray.map((items, index) => (
-              <div key={index} className="flex items-center">
-                <img
-                  className="w-40 h-28 rounded-full mr-2"
-                  src={items.url}
-                  alt="item list"
-                />
-                <span className="ml-5"> {items.name} </span>
-              </div>
+              <Link to={`/menu/${items.name.toLocaleLowerCase()}`}>
+                <div key={index} className="flex items-center">
+                  <img
+                    className="w-40 h-28 rounded-full mr-2"
+                    src={items.url}
+                    alt="item list"
+                  />
+                  <span className="ml-5"> {items.name} </span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

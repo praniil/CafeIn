@@ -47,7 +47,7 @@ const Home = () => {
             <img
               src={photoSliderArray[initialState].image}
               alt=""
-              className="w-96 h-72 pt-2 pb-5 z-0"
+              className="w-96 h-72 pt-2 pb-5 z-0 rounded-lg"
               style={{ position: "absolute" }}
             />
           </Link>
