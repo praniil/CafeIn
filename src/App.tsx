@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "./Compontents/Navbar";
@@ -22,7 +21,7 @@ function App() {
           <Route path="/menu" element={<Menu />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
           {/* <Route path="/bookatable" element={<BookTable />}></Route> */}
-          // <Route path="/sign-in" element={<SignIn />}></Route>
+          <Route path="/sign-in" element={<SignIn />}></Route>
           <Route path="/join-now" element={<JoinNow />}></Route>
           <Route path="/learn-about-coffee" element={<Info />} />
           <Route path="/menu/americano" element={<Americano />} />

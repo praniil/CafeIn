@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 interface signin {
   username: string;
@@ -16,10 +17,12 @@ const SignIn = () => {
     const { name, value } = event.target;
     setSignInInfo({ ...signInInfo, [name]: value });
   }
-  function handleSignIn(event: React.FormEvent) {
+  async function handleSignIn(event: React.FormEvent) {
     event.preventDefault();
     setSubmit(true);
+    console.log(submit);
     console.log("signInInfo:", signInInfo);
+    
   }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
