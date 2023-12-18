@@ -36,26 +36,48 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var database_1 = require("./database");
+var bcrypt = require("bcrypt");
 var express = require("express");
 var cors = require("cors");
 var bodyParser = require("body-parser");
 var app = express();
 var port = 8080;
 app.use(cors({
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3000",
 }));
 app.use(bodyParser.json());
-app.post("/api/sign-in", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, username, email, password;
+var createTableQuery = "\n  CREATE TABLE IF NOT EXISTS signup (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL\n  )\n";
+database_1.default.query(createTableQuery)
+    .then(function () {
+    console.log('Users table created or already exists');
+})
+    .catch(function (err) {
+    console.error('Error creating users table:', err);
+});
+app.post("/api/join-now", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, username, email, password, confirmPassword, hashedPassword, error_1;
     return __generator(this, function (_b) {
-        try {
-            _a = req.body, username = _a.username, email = _a.email, password = _a.password;
-            console.log(req.body);
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 3, , 4]);
+                _a = req.body, username = _a.username, email = _a.email, password = _a.password, confirmPassword = _a.confirmPassword;
+                return [4 /*yield*/, bcrypt.hash(password, 10)];
+            case 1:
+                hashedPassword = _b.sent();
+                console.log(hashedPassword);
+                console.log(req.body);
+                return [4 /*yield*/, database_1.default.query('INSERT INTO signup (username, email, password) VALUES ($1, $2, $3)', [username, email, hashedPassword])];
+            case 2:
+                _b.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _b.sent();
+                console.error("couldnt get the request from the user in sign up", error_1);
+                res.status(500).send("Error occurred while registering user");
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
-        catch (error) {
-            console.log("couldnt get the request from the user in sign in");
-        }
-        return [2 /*return*/];
     });
 }); });
 app.listen(port, function () {

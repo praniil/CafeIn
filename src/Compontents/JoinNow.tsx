@@ -5,24 +5,30 @@ interface joinNow {
   username: string;
   email: string;
   password: string;
-  confirmPassword : string;
+  confirmPassword: string;
 }
 const JoinNow = () => {
-  const [signInInfo, setSignInInfo] = useState<joinNow>({
+  const [signUpInfo, setsignUpInfo] = useState<joinNow>({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [submit, setSubmit] = useState<boolean>(false);
-  async function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setSignInInfo({ ...signInInfo, [name]: value });
+    setsignUpInfo({ ...signUpInfo, [name]: value });
+  }
+  async function handlesignUp(event: React.FormEvent) {
     try {
+    event.preventDefault();
+    setSubmit(true);
+    console.log(submit);
       const response = await axios.post("http://localhost:8080/api/join-now", {
-        username: signInInfo.username,
-        email: signInInfo.email,
-        password: signInInfo.password,
+        username: signUpInfo.username,
+        email: signUpInfo.email,
+        password: signUpInfo.password,
+        confirmPassword: signUpInfo.confirmPassword,
       });
       if (response.status === 200) {
         console.log("data sent to the backend successfully");
@@ -30,12 +36,6 @@ const JoinNow = () => {
     } catch (error) {
       console.error("failed to send the data to backend: ", error);
     }
-  }
-  function handleSignIn(event: React.FormEvent) {
-    event.preventDefault();
-    setSubmit(true);
-    console.log(submit);
-    console.log("signInInfo:", signInInfo);
   }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -45,7 +45,7 @@ const JoinNow = () => {
           name="username"
           id="username"
           placeholder="Username"
-          value={signInInfo.username}
+          value={signUpInfo.username}
           onChange={handleChange}
           className="w-full mb-4 p-2 border rounded-md focus:outline-none focus:border-blue-500"
         />
@@ -54,7 +54,7 @@ const JoinNow = () => {
           name="email"
           id="email"
           placeholder="Email"
-          value={signInInfo.email}
+          value={signUpInfo.email}
           onChange={handleChange}
           className="w-full mb-4 p-2 border rounded-md focus:outline-none focus:border-blue-500"
         />
@@ -63,7 +63,7 @@ const JoinNow = () => {
           name="password"
           id="password"
           placeholder="Password"
-          value={signInInfo.password}
+          value={signUpInfo.password}
           onChange={handleChange}
           className="w-full mb-4 p-2 border rounded-md focus:outline-none focus:border-blue-500"
         />
@@ -72,15 +72,15 @@ const JoinNow = () => {
           name="confirmPassword"
           id="confirmPassword"
           placeholder="Confirm Password"
-          value={signInInfo.confirmPassword}
+          value={signUpInfo.confirmPassword}
           onChange={handleChange}
           className="w-full mb-4 p-2 border rounded-md focus:outline-none focus:border-blue-500"
         />
         <button
-          onClick={handleSignIn}
+          onClick={handlesignUp}
           className="w-full bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          Sign In
+          Join Now
         </button>
       </form>
     </div>
