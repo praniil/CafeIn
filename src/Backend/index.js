@@ -40,9 +40,12 @@ var database_1 = require("./database");
 var bcrypt = require("bcrypt");
 var express = require("express");
 var cors = require("cors");
+var jwt = require("jsonwebtoken");
+var crypto = require("crypto");
 var bodyParser = require("body-parser");
 var app = express();
 var port = 8080;
+var secretKey = crypto.randomBytes(64).toString("hex");
 app.use(cors({
     origin: "http://localhost:3000",
 }));
@@ -50,10 +53,10 @@ app.use(bodyParser.json());
 var createTableQuery = "\n  CREATE TABLE IF NOT EXISTS signup (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL\n  )\n";
 database_1.default.query(createTableQuery)
     .then(function () {
-    console.log('Users table created or already exists');
+    console.log("Users table created or already exists");
 })
     .catch(function (err) {
-    console.error('Error creating users table:', err);
+    console.error("Error creating users table:", err);
 });
 app.post("/api/join-now", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, username, email, password, confirmPassword, hashedPassword, error_1;
@@ -67,7 +70,7 @@ app.post("/api/join-now", function (req, res) { return __awaiter(void 0, void 0,
                 hashedPassword = _b.sent();
                 console.log(hashedPassword);
                 console.log(req.body);
-                return [4 /*yield*/, database_1.default.query('INSERT INTO signup (username, email, password) VALUES ($1, $2, $3)', [username, email, hashedPassword])];
+                return [4 /*yield*/, database_1.default.query("INSERT INTO signup (username, email, password) VALUES ($1, $2, $3)", [username, email, hashedPassword])];
             case 2:
                 _b.sent();
                 return [3 /*break*/, 4];
@@ -75,6 +78,38 @@ app.post("/api/join-now", function (req, res) { return __awaiter(void 0, void 0,
                 error_1 = _b.sent();
                 console.error("couldnt get the request from the user in sign up", error_1);
                 res.status(500).send("Error occurred while registering user");
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
+app.post("/api/sign-in", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, username, email, password, userData, user, passwordMatch, accessToken, error_2;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 3, , 4]);
+                _a = req.body, username = _a.username, email = _a.email, password = _a.password;
+                return [4 /*yield*/, database_1.default.query("SELECT * FROM signup WHERE username = $1", [username])];
+            case 1:
+                userData = _b.sent();
+                if (userData.rows.length === 0) {
+                    return [2 /*return*/, res.status(401).send("Invalid credentials")];
+                }
+                user = userData.rows[0];
+                return [4 /*yield*/, bcrypt.compare(password, user.password)];
+            case 2:
+                passwordMatch = _b.sent();
+                if (!passwordMatch) {
+                    return [2 /*return*/, res.status(401).send("Invalid Credentials")];
+                }
+                accessToken = jwt.sign({ id: user.id, email: user.email, username: user.username }, secretKey, { expiresIn: "30m" });
+                res.json({ accessToken: accessToken });
+                return [3 /*break*/, 4];
+            case 3:
+                error_2 = _b.sent();
+                console.error("Error loggin in: ", error_2);
+                res.status(500).send("Error occurred while logging in");
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }

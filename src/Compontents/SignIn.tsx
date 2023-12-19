@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 
 interface signin {
   username: string;
@@ -22,6 +22,18 @@ const SignIn = () => {
     setSubmit(true);
     console.log(submit);
     console.log("signInInfo:", signInInfo);
+    try {
+      const response = await axios.post("http://localhost:8080/api/sign-in", {
+        username: signInInfo.username,
+        email: signInInfo.email,
+        password: signInInfo.password,
+      });
+      if (response.status === 200) {
+        console.log("data successfully retrieved");
+      }
+    } catch (error) {
+      console.error("failed to get the data from backend: ", error);
+    }
   }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
