@@ -53,7 +53,7 @@ app.post("/api/join-now", async (req: Request, res: Response) => {
 
 app.post("/api/sign-in", async (req: Request, res: Response) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, password } = req.body;
     const userData = await db.query(
       "SELECT * FROM signup WHERE username = $1",
       [username]
@@ -62,6 +62,7 @@ app.post("/api/sign-in", async (req: Request, res: Response) => {
       return res.status(401).send("Invalid credentials");
     }
     const user = userData.rows[0];
+    console.log(user)
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
@@ -69,7 +70,7 @@ app.post("/api/sign-in", async (req: Request, res: Response) => {
     }
     //if credentials are valid, generate a JWT token
     const accessToken = jwt.sign(
-      { id: user.id, email: user.email, username: user.username },
+      { id: user.id, username: user.username },
       secretKey,
       { expiresIn: "30m" }
     );

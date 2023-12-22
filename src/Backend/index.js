@@ -84,12 +84,12 @@ app.post("/api/join-now", function (req, res) { return __awaiter(void 0, void 0,
     });
 }); });
 app.post("/api/sign-in", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, username, email, password, userData, user, passwordMatch, accessToken, error_2;
+    var _a, username, password, userData, user, passwordMatch, accessToken, error_2;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 3, , 4]);
-                _a = req.body, username = _a.username, email = _a.email, password = _a.password;
+                _a = req.body, username = _a.username, password = _a.password;
                 return [4 /*yield*/, database_1.default.query("SELECT * FROM signup WHERE username = $1", [username])];
             case 1:
                 userData = _b.sent();
@@ -97,13 +97,14 @@ app.post("/api/sign-in", function (req, res) { return __awaiter(void 0, void 0, 
                     return [2 /*return*/, res.status(401).send("Invalid credentials")];
                 }
                 user = userData.rows[0];
+                console.log(user);
                 return [4 /*yield*/, bcrypt.compare(password, user.password)];
             case 2:
                 passwordMatch = _b.sent();
                 if (!passwordMatch) {
                     return [2 /*return*/, res.status(401).send("Invalid Credentials")];
                 }
-                accessToken = jwt.sign({ id: user.id, email: user.email, username: user.username }, secretKey, { expiresIn: "30m" });
+                accessToken = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: "30m" });
                 res.json({ accessToken: accessToken });
                 return [3 /*break*/, 4];
             case 3:

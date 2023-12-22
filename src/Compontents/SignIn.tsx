@@ -1,18 +1,24 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 interface signin {
   username: string;
-  email: string;
   password: string;
 }
 const SignIn = () => {
   const [signInInfo, setSignInInfo] = useState<signin>({
     username: "",
-    email: "",
     password: "",
   });
+
+  const [signedIn, setSignedIn] = useState<boolean>(false);
   const [submit, setSubmit] = useState<boolean>(false);
+
+  if (signedIn) {
+    return <Navigate to="/" replace />;
+  }
+
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setSignInInfo({ ...signInInfo, [name]: value });
@@ -25,11 +31,10 @@ const SignIn = () => {
     try {
       const response = await axios.post("http://localhost:8080/api/sign-in", {
         username: signInInfo.username,
-        email: signInInfo.email,
         password: signInInfo.password,
       });
       if (response.status === 200) {
-        console.log("data successfully retrieved");
+        setSignedIn(true);
       }
     } catch (error) {
       console.error("failed to get the data from backend: ", error);
@@ -44,15 +49,6 @@ const SignIn = () => {
           id="username"
           placeholder="Username"
           value={signInInfo.username}
-          onChange={handleChange}
-          className="w-full mb-4 p-2 border rounded-md focus:outline-none focus:border-blue-500"
-        />
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Email"
-          value={signInInfo.email}
           onChange={handleChange}
           className="w-full mb-4 p-2 border rounded-md focus:outline-none focus:border-blue-500"
         />
