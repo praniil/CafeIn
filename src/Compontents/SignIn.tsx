@@ -14,8 +14,15 @@ const SignIn = () => {
 
   const [signedIn, setSignedIn] = useState<boolean>(false);
   const [submit, setSubmit] = useState<boolean>(false);
-
+  const [redirectHome, setRedirectHome] = useState<boolean>(false);
+  const [message, setMessage] = useState<String | null>("");
   if (signedIn) {
+    setTimeout(() => {
+      setRedirectHome(true);
+    }, 1000);
+  }
+
+  if (redirectHome) {
     return <Navigate to="/" replace />;
   }
 
@@ -35,6 +42,7 @@ const SignIn = () => {
       });
       if (response.status === 200) {
         setSignedIn(true);
+        setMessage("Successfully Signned In! ");
       }
     } catch (error) {
       console.error("failed to get the data from backend: ", error);
@@ -42,6 +50,7 @@ const SignIn = () => {
   }
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
+      <h1 className="text-3xl font-bold mb-8">{message}</h1>
       <form className="w-full max-w-sm p-4 bg-white shadow-md rounded-lg">
         <input
           type="text"
