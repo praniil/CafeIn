@@ -19,7 +19,7 @@ app.use(
 );
 app.use(bodyParser.json());
 
-const createTableQuery = `
+const createTableSignup = `
   CREATE TABLE IF NOT EXISTS signup (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
@@ -27,12 +27,26 @@ const createTableQuery = `
     password VARCHAR(100) NOT NULL
   )
 `;
-db.query(createTableQuery)
+const createTableSignin = `
+  CREATE TABLE IF NOT EXISTS signin (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL
+  )
+`;
+db.query(createTableSignup)
   .then(() => {
     console.log("Users table created or already exists");
   })
   .catch((err) => {
     console.error("Error creating users table:", err);
+  });
+db.query(createTableSignin)
+  .then(() => {
+    console.log("users signin table created or already exists");
+  })
+  .catch((err) => {
+    console.error("Error creating users signin table:", err);
   });
 
 app.post("/api/join-now", async (req: Request, res: Response) => {
@@ -62,7 +76,7 @@ app.post("/api/sign-in", async (req: Request, res: Response) => {
       return res.status(401).send("Invalid credentials");
     }
     const user = userData.rows[0];
-    console.log(user)
+    console.log(user);
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
@@ -75,6 +89,10 @@ app.post("/api/sign-in", async (req: Request, res: Response) => {
       { expiresIn: "30m" }
     );
     res.json({ accessToken });
+    await db.query("INSERT INTO signin(username, password) VALUES ($1, $2)", [
+      user.username,
+      user.password,
+    ]);
   } catch (error) {
     console.error("Error loggin in: ", error);
     res.status(500).send("Error occurred while logging in");
