@@ -8,7 +8,14 @@ const navbarElements: string[] = [
   "Learn About Coffee",
 ];
 
-const Navbar = () => {
+interface signnedIn {
+  passSignIn: {
+    signedIn: boolean;
+    setSignedIn: React.Dispatch<React.SetStateAction<boolean>>;
+  };
+}
+const Navbar: React.FC<signnedIn> = (props) => {
+  const { signedIn, setSignedIn } = props.passSignIn;
   return (
     <div className="text-black">
       <div className="container mx-auto">
@@ -32,13 +39,23 @@ const Navbar = () => {
           </div>
           <div className="flex items-center space-x-6 pr-4">
             <div className="flex h-full">
+              {!signedIn ? (
+                <li className="bg-red-950 text-white p-1 h-full mr-2 pl-2 pr-2">
+                  <Link
+                    to="/sign-in"
+                    className="text-lg font-medium h-full flex items-center"
+                  >
+                    Sign In
+                  </Link>
+                </li>
+              ) : (
+                <li>Welcome</li>
+              )}
               <li className="bg-red-950 text-white p-1 h-full mr-2 pl-2 pr-2">
-                <Link to="/sign-in" className="text-lg font-medium h-full flex items-center">
-                  Sign In
-                </Link>
-              </li>
-              <li className="bg-red-950 text-white p-1 h-full mr-2 pl-2 pr-2">
-                <Link to="/join-now" className="text-lg font-medium h-full flex items-center">
+                <Link
+                  to="/join-now"
+                  className="text-lg font-medium h-full flex items-center"
+                >
                   Join Now
                 </Link>
               </li>

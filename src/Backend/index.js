@@ -50,13 +50,21 @@ app.use(cors({
     origin: "http://localhost:3000",
 }));
 app.use(bodyParser.json());
-var createTableQuery = "\n  CREATE TABLE IF NOT EXISTS signup (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL\n  )\n";
-database_1.default.query(createTableQuery)
+var createTableSignup = "\n  CREATE TABLE IF NOT EXISTS signup (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    email VARCHAR(100) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL\n  )\n";
+var createTableSignin = "\n  CREATE TABLE IF NOT EXISTS signin (\n    id SERIAL PRIMARY KEY,\n    username VARCHAR(50) UNIQUE NOT NULL,\n    password VARCHAR(100) NOT NULL\n  )\n";
+database_1.default.query(createTableSignup)
     .then(function () {
     console.log("Users table created or already exists");
 })
     .catch(function (err) {
     console.error("Error creating users table:", err);
+});
+database_1.default.query(createTableSignin)
+    .then(function () {
+    console.log("users signin table created or already exists");
+})
+    .catch(function (err) {
+    console.error("Error creating users signin table:", err);
 });
 app.post("/api/join-now", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, username, email, password, confirmPassword, hashedPassword, error_1;
@@ -88,7 +96,7 @@ app.post("/api/sign-in", function (req, res) { return __awaiter(void 0, void 0, 
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _b.trys.push([0, 3, , 4]);
+                _b.trys.push([0, 4, , 5]);
                 _a = req.body, username = _a.username, password = _a.password;
                 return [4 /*yield*/, database_1.default.query("SELECT * FROM signup WHERE username = $1", [username])];
             case 1:
@@ -106,13 +114,19 @@ app.post("/api/sign-in", function (req, res) { return __awaiter(void 0, void 0, 
                 }
                 accessToken = jwt.sign({ id: user.id, username: user.username }, secretKey, { expiresIn: "30m" });
                 res.json({ accessToken: accessToken });
-                return [3 /*break*/, 4];
+                return [4 /*yield*/, database_1.default.query("INSERT INTO signin(username, password) VALUES ($1, $2)", [
+                        user.username,
+                        user.password,
+                    ])];
             case 3:
+                _b.sent();
+                return [3 /*break*/, 5];
+            case 4:
                 error_2 = _b.sent();
                 console.error("Error loggin in: ", error_2);
                 res.status(500).send("Error occurred while logging in");
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); });

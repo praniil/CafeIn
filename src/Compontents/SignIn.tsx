@@ -1,18 +1,24 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import { Navigate } from "react-router-dom";
 
 interface signin {
   username: string;
   password: string;
 }
-const SignIn = () => {
+interface signnedIn {
+  passSignIn: {
+    signedIn: boolean;
+    setSignedIn: React.Dispatch<SetStateAction<boolean>>;
+  };
+}
+const SignIn: React.FC<signnedIn> = (props) => {
   const [signInInfo, setSignInInfo] = useState<signin>({
     username: "",
     password: "",
   });
 
-  const [signedIn, setSignedIn] = useState<boolean>(false);
+  const { signedIn, setSignedIn } = props.passSignIn;
   const [submit, setSubmit] = useState<boolean>(false);
   const [redirectHome, setRedirectHome] = useState<boolean>(false);
   const [message, setMessage] = useState<String | null>("");
