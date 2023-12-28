@@ -6,6 +6,7 @@ const navbarElements: string[] = [
   "Cart",
   "Book A Table",
   "Learn About Coffee",
+  "Pin Your Location"
 ];
 
 interface signnedIn {

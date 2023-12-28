@@ -9,6 +9,7 @@ import JoinNow from "./Compontents/JoinNow";
 import Info from "./Compontents/Info";
 import Menu from "./Compontents/Menu";
 import Americano from "./Compontents/CoffeeTypes/Americano";
+import Maps from "./Compontents/maps";
 
 
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/cafein" element={<Home />}></Route>
           <Route path="/menu" element={<Menu />}></Route>
           <Route path="/cart" element={<Cart />}></Route>
+
           {/* <Route path="/bookatable" element={<BookTable />}></Route> */}
           <Route
             path="/sign-in"
@@ -34,6 +36,7 @@ function App() {
           ></Route>
           <Route path="/join-now" element={<JoinNow />}></Route>
           <Route path="/learn-about-coffee" element={<Info />} />
+          <Route path="/pin-your-location" element={<Maps/>} />
           <Route path="/menu/americano" element={<Americano />} />
         </Routes>
       </BrowserRouter>
