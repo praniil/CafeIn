@@ -9,7 +9,7 @@ import JoinNow from "./Compontents/JoinNow";
 import Info from "./Compontents/Info";
 import Menu from "./Compontents/Menu";
 import Americano from "./Compontents/CoffeeTypes/Americano";
-import Maps from "./Compontents/maps";
+// import Maps from "./Compontents/maps";
 
 
 
@@ -36,7 +36,7 @@ function App() {
           ></Route>
           <Route path="/join-now" element={<JoinNow />}></Route>
           <Route path="/learn-about-coffee" element={<Info />} />
-          <Route path="/pin-your-location" element={<Maps/>} />
+          {/* <Route path="/pin-your-location" element={<Maps/>} /> */}
           <Route path="/menu/americano" element={<Americano />} />
         </Routes>
       </BrowserRouter>
